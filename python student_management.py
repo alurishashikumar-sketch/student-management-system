@@ -1,1 +1,107 @@
+import sqlite3
+
+# Connect to database (creates file if not exist)
+conn = sqlite3.connect("students.db")
+cursor = conn.cursor()
+
+# Create table
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS students (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    age INTEGER,
+    department TEXT
+)
+""")
+conn.commit()
+
+# Add student
+def add_student():
+    id = int(input("Enter Student ID: "))
+    name = input("Enter Name: ")
+    age = int(input("Enter Age: "))
+    dept = input("Enter Department: ")
+
+    cursor.execute(
+        "INSERT INTO students VALUES (?, ?, ?, ?)",
+        (id, name, age, dept)
+    )
+    conn.commit()
+    print("Student Added Successfully")
+
+# View all students
+def view_students():
+    cursor.execute("SELECT * FROM students")
+    rows = cursor.fetchall()
+    if not rows:
+        print("No records found")
+    else:
+        print("\nID | Name | Age | Department")
+        print("-" * 30)
+        for row in rows:
+            print(row)
+
+# Update student
+def update_student():
+    id = int(input("Enter Student ID to Update: "))
+    name = input("Enter New Name: ")
+    age = int(input("Enter New Age: "))
+    dept = input("Enter New Department: ")
+
+    cursor.execute(
+        "UPDATE students SET name=?, age=?, department=? WHERE id=?",
+        (name, age, dept, id)
+    )
+    conn.commit()
+    print("Student Updated Successfully")
+
+# Delete student
+def delete_student():
+    id = int(input("Enter Student ID to Delete: "))
+    cursor.execute("DELETE FROM students WHERE id=?", (id,))
+    conn.commit()
+    print("Student Deleted Successfully")
+
+# Search student
+def search_student():
+    id = int(input("Enter Student ID to Search: "))
+    cursor.execute("SELECT * FROM students WHERE id=?", (id,))
+    row = cursor.fetchone()
+    if row:
+        print("Student Found:", row)
+    else:
+        print("Student Not Found")
+
+# Main menu
+def main():
+    while True:
+        print("\n--- Student Management System ---")
+        print("1. Add Student")
+        print("2. View All Students")
+        print("3. Update Student")
+        print("4. Delete Student")
+        print("5. Search Student")
+        print("6. Exit")
+
+        choice = input("Enter choice: ")
+
+        if choice == "1":
+            add_student()
+        elif choice == "2":
+            view_students()
+        elif choice == "3":
+            update_student()
+        elif choice == "4":
+            delete_student()
+        elif choice == "5":
+            search_student()
+        elif choice == "6":
+            print("Exiting Program")
+            break
+        else:
+            print("Invalid Choice")
+
+# Run the program
+main()
+conn.close()
 
