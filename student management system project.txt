@@ -1,6 +1,3 @@
-student management system project
-
-
 import sqlite3
 
 # Create database connection
@@ -30,7 +27,7 @@ def add_student():
         (id, name, age, dept)
     )
     conn.commit()
-    print("✅ Student Added Successfully")
+    print("Student Added Successfully")
 
 
 def view_students():
@@ -38,7 +35,7 @@ def view_students():
     rows = cursor.fetchall()
 
     if not rows:
-        print("❌ No records found")
+        print("No records found")
     else:
         print("\nID | Name | Age | Department")
         print("-" * 30)
@@ -57,14 +54,14 @@ def update_student():
         (name, age, dept, id)
     )
     conn.commit()
-    print("✅ Student Updated Successfully")
+    print("Student Updated Successfully")
 
 
 def delete_student():
     id = int(input("Enter Student ID to Delete: "))
     cursor.execute("DELETE FROM students WHERE id=?", (id,))
     conn.commit()
-    print("✅ Student Deleted Successfully")
+    print("Student Deleted Successfully")
 
 
 def search_student():
@@ -75,7 +72,7 @@ def search_student():
     if row:
         print("Student Found:", row)
     else:
-        print("❌ Student Not Found")
+        print("Student Not Found")
 
 
 def main():
@@ -101,11 +98,12 @@ def main():
         elif choice == "5":
             search_student()
         elif choice == "6":
-            print("👋 Exiting Program")
+            print("Exiting Program")
             break
         else:
-            print("❌ Invalid Choice")
+            print("Invalid Choice")
 
 
 main()
 conn.close()
+
